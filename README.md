@@ -37,3 +37,16 @@ Séparer les services par container
 ## Kubernetes
 
 Pffzgjzrknh,b
+
+
+## Commandes de l'application 
+### Build
+```sh
+nest build
+```
+### Dev
+Lancer la commande
+```sh
+npm run start:dev
+```
+
