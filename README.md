@@ -17,6 +17,7 @@ Application communautaire de partage de tablatures et partitions.
  - Musique (auteur, liste de titres)
  - Tickets (idUser, idMusique, détail, état)
  - Commentaire (idUser, idMusique, commentaire)
+ - Partition (idMusique, liste d'instruments, difficulté, lien vers COS)
 
 ### Stockage partitions
 
@@ -39,6 +40,13 @@ Pffzgjzrknh,b
 
 
 ## Commandes de l'application 
+
+### Installation
+
+```sh
+npm install
+npm install -g @nestjs/cli
+```
 ### Build
 ```sh
 nest build
