@@ -29,7 +29,6 @@ export class UsersService {
   }
 
   async deleteById(id: string): Promise<any>{
-    console.log("id ", id);
     return this.userModel.findByIdAndRemove(id);
   }
 }
