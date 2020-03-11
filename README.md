@@ -12,12 +12,14 @@ Application communautaire de partage de tablatures et partitions.
 
 ### Stockage users/auteurs/titres
 
- * Mongodb, 3 tables :
+  Mongodb, 5 tables :
  - Utilisateur (nom, prenom, pseudo, email, pswd, typeU)
  - Musique (auteur, liste de titres)
- - Tickets (idUser, idMusique, détail, état)
+ - Tickets (idUser, idMusique, titre, détail, état)
  - Commentaire (idUser, idMusique, commentaire)
  - Partition (idMusique, liste d'instruments, difficulté, lien vers COS)
+
+ Endpoints : create, update, delete, get
 
 ### Stockage partitions
 
