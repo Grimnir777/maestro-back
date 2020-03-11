@@ -1,4 +1,3 @@
-
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
@@ -7,5 +6,5 @@ export const UserSchema = new mongoose.Schema({
   mail: String,
   pseudo: String,
   password: String,
-  typeUser: String
+  typeUser: String,
 });

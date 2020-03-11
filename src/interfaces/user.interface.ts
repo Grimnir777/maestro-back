@@ -6,5 +6,5 @@ export interface User extends Document {
     readonly mail: String;
     readonly pseudo: String;
     readonly password: String;
-    readonly typeUser: String
+    readonly typeUser: String;
 }

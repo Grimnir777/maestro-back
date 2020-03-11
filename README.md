@@ -14,10 +14,9 @@ Application communautaire de partage de tablatures et partitions.
 
   Mongodb, 5 tables :
  - Utilisateur (nom, prenom, pseudo, email, pswd, typeU)
- - Musique (auteur, liste de titres)
  - Tickets (idUser, idMusique, titre, détail, état)
  - Commentaire (idUser, idMusique, commentaire)
- - Partition (idMusique, liste d'instruments, difficulté, lien vers COS)
+ - Partition (auteur last.fm, titre last.fm, liste d'instruments, difficulté, lien vers COS)
 
  Endpoints : create, update, delete, get
 
