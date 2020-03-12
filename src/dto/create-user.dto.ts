@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, ArrayUnique } from 'class-validator';
 import { Document } from 'mongoose';
 
 export class CreateUserDto extends Document {
@@ -8,9 +8,11 @@ export class CreateUserDto extends Document {
   @IsString()
   readonly lastname: string;
 
+  @ArrayUnique()
   @IsString()
   readonly mail: string;
 
+  @ArrayUnique()
   @IsString()
   readonly pseudo: string;
 

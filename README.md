@@ -18,7 +18,7 @@ Application communautaire de partage de tablatures et partitions.
  - Commentaire (idUser, idMusique, commentaire)
  - Partition (auteur last.fm, titre last.fm, liste d'instruments, difficulté, lien vers COS)
 
- Endpoints : create, update, delete, get
+ Endpoints : create, update, delete, gestion
 
 ### Stockage partitions
 
@@ -46,7 +46,6 @@ Pffzgjzrknh,b
 
 ```sh
 npm install
-npm install -g @nestjs/cli
 ```
 ### Build
 ```sh
