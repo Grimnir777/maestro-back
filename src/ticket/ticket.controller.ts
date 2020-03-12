@@ -8,27 +8,27 @@ export class TicketsController {
     constructor(private ticketService: TicketsService) {}
 
     @Post()
-    postUser(@Body() ticket: CreateTicketDto): any{
+    postTicket(@Body() ticket: CreateTicketDto): any{
         return this.ticketService.create(ticket);
     }
 
     @Put()
-    putUser(@Body() user: CreateTicketDto): any{
-        return this.ticketService.update(user);
+    putTicket(@Body() ticket: CreateTicketDto): any{
+        return this.ticketService.update(ticket);
     } 
 
     @Get(':id')
-    getUserById(@Param('id') id: string): any{
+    getTicketById(@Param('id') id: string): any{
         return this.ticketService.findById(id);
     }
 
     @Get()
-    getAllUsers(): any{
+    getAllTickets(): any{
         return this.ticketService.findAll();
     }
 
     @Delete(':id')
-    deleteUser(@Param('id') id: string): any{
+    deleteTicket(@Param('id') id: string): any{
         return this.ticketService.deleteById(id);
     }
 }

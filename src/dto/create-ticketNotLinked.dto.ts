@@ -1,7 +1,7 @@
 import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
-export class CreateTicketDto extends Document {
+export class CreateTicketNLDto extends Document {
   @IsString()
   readonly title: string;
 
@@ -10,9 +10,6 @@ export class CreateTicketDto extends Document {
 
   @IsString()
   readonly state: string;
-
-  @IsString()
-  readonly idPartition: string;
 
   @IsString()
   readonly idUser: string;

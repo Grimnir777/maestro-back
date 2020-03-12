@@ -1,7 +1,8 @@
-import { Model } from 'mongoose';
+import { Model, STATES } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { Ticket } from '../interfaces/ticket.interface';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
+import { CreateTicketNLDto } from '../dto/create-ticketNotLinked.dto';
 
 @Injectable()
 export class TicketsService {
@@ -30,5 +31,17 @@ export class TicketsService {
 
   async deleteById(id: string): Promise<any>{
     return this.ticketModel.findByIdAndRemove(id);
+  }
+
+  // create from partition controller
+  async createWithId(ticket: CreateTicketNLDto, id: string): Promise<Ticket> {
+    const createdTicket = new this.ticketModel({
+      title: ticket.title,
+      information: ticket.information,
+      state: ticket.state,
+      idPartition: id,
+      idUser: ticket.idUser,
+    });
+    return createdTicket.save();
   }
 }
