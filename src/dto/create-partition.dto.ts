@@ -1,5 +1,6 @@
 import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
+import { Difficulty } from 'src/interfaces/partition.interface';
 
 export class CreatePartitionDto extends Document {
   @IsString()
@@ -9,7 +10,7 @@ export class CreatePartitionDto extends Document {
   readonly title: string;
 
   @IsString()
-  readonly difficulty: string;
+  readonly difficulty: Difficulty;
 
   @IsString()
   readonly linkPart: string;

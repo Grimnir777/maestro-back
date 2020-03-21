@@ -1,5 +1,6 @@
 import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
+import { State } from '../interfaces/ticket.interface';
 
 export class CreateTicketNLDto extends Document {
   @IsString()
@@ -9,7 +10,7 @@ export class CreateTicketNLDto extends Document {
   readonly information: string;
 
   @IsString()
-  readonly state: string;
+  readonly state: State;
 
   @IsString()
   readonly idUser: string;

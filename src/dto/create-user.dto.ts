@@ -1,5 +1,6 @@
 import { IsString, ArrayUnique } from 'class-validator';
 import { Document } from 'mongoose';
+import { UserType } from 'src/interfaces/user.interface';
 
 export class CreateUserDto extends Document {
   @IsString()
@@ -20,5 +21,5 @@ export class CreateUserDto extends Document {
   readonly password: string;
 
   @IsString()
-  readonly typeUser: string;
+  readonly typeUser: UserType;
 }

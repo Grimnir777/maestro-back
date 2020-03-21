@@ -57,3 +57,18 @@ Lancer la commande
 npm run start:dev
 ```
 
+# installation en local 
+
+- Lancer Minio en local :
+ ```sh
+docker pull minio/minio
+docker run -d -p 9000:9000 minio/minio server /data
+```
+Use default credentials : minioadmin/minioadmin
+
+- Lancer Mongo en local (dépend de l'OS utilisé)
+
+- Lancer le [front](https://github.com/Grimnir777/maestro-front) en local (npm install && ng serve)
+
+- Lancer le [back](https://github.com/Grimnir777/maestro-back) en local (npm install && npm run start:dev)
+
