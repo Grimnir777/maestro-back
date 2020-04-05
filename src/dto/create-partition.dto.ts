@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsArray } from 'class-validator';
 import { Document } from 'mongoose';
 import { Difficulty } from 'src/interfaces/partition.interface';
 
@@ -17,4 +17,7 @@ export class CreatePartitionDto extends Document {
 
   @IsString()
   readonly instrument: [{nom: string}];
+
+  @IsArray()
+  comments: [{ idUser: String, pseudoUser: String, text: String, date: Date }];
 }
