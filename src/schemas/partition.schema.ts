@@ -6,5 +6,5 @@ export const PartitionSchema = new mongoose.Schema({
     difficulty: String,
     linkPart: String,
     instrument: [{nom: String}],
-    comments: [{ idUser: String, pseudoUser: String, text: String }]
+    comments: [{ idUser: String, pseudoUser: String, text: String, date: Date }]
 });

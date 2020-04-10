@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
-import { User } from '../interfaces/user.interface';
+import { User, UserType } from '../interfaces/user.interface';
 import { CreateUserDto } from '../dto/create-user.dto';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -12,19 +12,17 @@ export class UsersService {
     private readonly userModel: Model<User>,
   ) {}
 
-  async create(user: CreateUserDto): Promise<User> {
-    bcrypt.hash(user.password, saltRounds, function(err, hash) {
-      const createdUser = new this.userModel({
-        name: user.name,
-        lastname: user.lastname,
-        mail: user.mail,
-        pseudo: user.pseudo,
-        password: hash,
-        typeUser: user.typeUser,
-      });
+  async create(user: CreateUserDto): Promise<any> {
+    bcrypt.hash(user.password, saltRounds)
+    .then((hash)=> {
+      user.password = hash;
+      user.typeUser = UserType.user; 
+      const createdUser = new this.userModel(user);
       return createdUser.save();
-    });
-   return null;
+    })
+    .catch((error) => {
+      return error;
+    })
   }
 
   async findAll(): Promise<User[]> {

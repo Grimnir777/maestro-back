@@ -1,7 +1,9 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Delete, Param, Get, Res } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Delete, Param, Get, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PartitionFileService } from './services/partition-file.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('partition-file')
 export class PartitionFileController {
   private bucketName: string = 'partitions';
