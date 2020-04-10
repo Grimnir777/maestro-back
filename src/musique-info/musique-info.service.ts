@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { MusiqueInfo } from '../interfaces/musique-info.interface';
-import { CreateMusiqueInfo } from '../dto/create-musique-info.dto';
+import { CreateMusiqueInfoDto } from '../dto/create-musique-info.dto';
 
 @Injectable()
 export class MusiqueInfoService {
@@ -10,7 +10,7 @@ export class MusiqueInfoService {
     private readonly musiqueInfoModel: Model<MusiqueInfo>,
   ) {}
 
-  async create(musiqueInfo: CreateMusiqueInfo): Promise<MusiqueInfo> {
+  async create(musiqueInfo: CreateMusiqueInfoDto): Promise<MusiqueInfo> {
     const createdMusiqueInfo = new this.musiqueInfoModel(musiqueInfo);
     return createdMusiqueInfo.save();
   }
