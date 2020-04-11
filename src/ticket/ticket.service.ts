@@ -1,4 +1,4 @@
-import { Model, STATES } from 'mongoose';
+import { Model } from 'mongoose';
 import { Injectable, Inject } from '@nestjs/common';
 import { Ticket } from '../interfaces/ticket.interface';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
