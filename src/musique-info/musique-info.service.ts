@@ -4,8 +4,36 @@ import { MusiqueInfo } from '../interfaces/musique-info.interface';
 import { CreateMusiqueInfo1Dto } from '../dto/create-musique-info1.dto';
 import { CreateMusiqueInfo2Dto } from '../dto/create-musique-info2.dto';
 
-var rp = require('request-promise');
-var ResultReq, Url= 'pas encore reçu';
+
+function getUrl(TitreMusique, ArtisteMusique){
+  var rp = require('request-promise');
+  var METHOD = "album.search", LIMIT = "1000", API_KEY = "8ef2bb24e72d52a0c58169ba37b79aba", FORMAT = "json";
+  var ResultReq, Url, albums, i=0, bonneMusique = false;
+
+
+  return new Promise((resolve, reject) => {
+    rp("http://ws.audioscrobbler.com/2.0/?method=" + METHOD + "&limit=" + LIMIT + "&album=" + (TitreMusique) + "&api_key=" + API_KEY + "&format=" + FORMAT)
+      .then(function (htmlString) {
+        Url = "Pas d'url trouvée"
+        ResultReq = JSON.parse(htmlString)
+        albums = ResultReq['results']['albummatches']['album']
+        //console.log("Nombre de réponses " + albums.length + " sur " + ResultReq['results']['opensearch:totalResults'] + " " + (albums.length/ResultReq['results']['opensearch:totalResults'])*100) + "\%"
+        while (i<albums.length && !bonneMusique){
+          bonneMusique = (albums[i].name.toUpperCase() == TitreMusique.toUpperCase() && albums[i].artist.toUpperCase() == ArtisteMusique.toUpperCase());
+          //console.log("i: " + i + ", chanson: " + albums[i].name + ", artiste: " + albums[i].artist)
+          if (bonneMusique){
+            Url = albums[i].url
+          }
+          i++;
+        }
+        resolve(Url);
+      })
+      .catch(function (err) {
+        console.log (err)
+        reject("Erreur dans la requete: " + err);
+      });
+  });  
+}
 
 @Injectable()
 export class MusiqueInfoService {
@@ -20,64 +48,30 @@ export class MusiqueInfoService {
   }
 
   async create2(infoChanson: CreateMusiqueInfo1Dto): Promise<MusiqueInfo>{
-
-    rp("http://ws.audioscrobbler.com/2.0/?method=album.search&limit=1&album=" + (infoChanson.name) + "&api_key=8ef2bb24e72d52a0c58169ba37b79aba&format=json")
-        .then(function (htmlString) {
-            // affichage du resulat
-            ResultReq = JSON.parse(htmlString)
-            Url = ResultReq['results']['albummatches']['album'][0]['url']
-            console.log(Url)
-
-            console.log("Titre: " + infoChanson.name)
-            console.log("Artiste: " + infoChanson.artiste)
-            console.log("URL: " + Url);
-            console.log("URL2: " + String(Url));
-
-            console.log("Oui")
-
-        })
-        .catch(function (err) {
-            // Affichage de l'erreur
-            console.log("Erreurrrr")
-            console.log(err)
-            Url:"Erreur " + err
-
-        });
-
-        /*
-        TODO
-        Réussir a attendre la fin de l'éxécution de la requete
-        */
-
-        console.log("Non");
+        const Url = await getUrl(infoChanson.name, infoChanson.artiste)
+       console.log("URL: " + Url)
         const createdMusiqueInfo = new this.musiqueInfoModel({
           name: infoChanson.name,
           artiste: infoChanson.artiste,
-          url:Url
+          url: Url
         });
-       
-        console.log("Titre: " + infoChanson.name);
-        console.log("Artiste: " + infoChanson.artiste);
-        console.log("URL: " + Url);
-        console.log("URL2: " + String(Url));
         return createdMusiqueInfo.save();
  }
 
- async findById(id: string): Promise<MusiqueInfo>{
-  return this.musiqueInfoModel.findById(id);
-}
+  async findById(id: string): Promise<MusiqueInfo>{
+    return this.musiqueInfoModel.findById(id);
+  }
 
-async findAll(): Promise<MusiqueInfo[]> {
-  return this.musiqueInfoModel.find();
-}
+  async findAll(): Promise<MusiqueInfo[]> {
+    return this.musiqueInfoModel.find();
+  }
 
-async update(musiqueInfo: CreateMusiqueInfo2Dto): Promise<MusiqueInfo> {
-  const musiqueInfoToUpdate = this.findById(musiqueInfo.id);
-  return (await musiqueInfoToUpdate).update(musiqueInfo);
-}
+  async update(musiqueInfo: CreateMusiqueInfo2Dto): Promise<MusiqueInfo> {
+    const musiqueInfoToUpdate = this.findById(musiqueInfo.id);
+    return (await musiqueInfoToUpdate).update(musiqueInfo);
+  }
 
-async deleteById(id: string): Promise<any>{
-  return this.musiqueInfoModel.findByIdAndRemove(id);
-}
-
+  async deleteById(id: string): Promise<any>{
+    return this.musiqueInfoModel.findByIdAndRemove(id);
+  }
 }
