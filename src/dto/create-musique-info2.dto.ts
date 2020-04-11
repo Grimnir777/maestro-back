@@ -1,7 +1,7 @@
 import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
-export class CreateMusiqueInfoDto extends Document {
+export class CreateMusiqueInfo2Dto extends Document {
   @IsString()
   readonly name: string;
 
