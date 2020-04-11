@@ -8,13 +8,13 @@ import { CreateMusiqueInfo2Dto } from '../dto/create-musique-info2.dto';
 function getUrl(TitreMusique, ArtisteMusique){
   var rp = require('request-promise');
   var METHOD = "album.search", LIMIT = "1000", API_KEY = "8ef2bb24e72d52a0c58169ba37b79aba", FORMAT = "json";
-  var ResultReq, Url, albums, i=0, bonneMusique = false;
+  var ResultReq, UrlMusique, UrlPochette, albums, i=0, bonneMusique = false;
 
 
   return new Promise((resolve, reject) => {
     rp("http://ws.audioscrobbler.com/2.0/?method=" + METHOD + "&limit=" + LIMIT + "&album=" + (TitreMusique) + "&api_key=" + API_KEY + "&format=" + FORMAT)
       .then(function (htmlString) {
-        Url = "Pas d'url trouvée"
+        UrlMusique = "Pas d'url trouvée"
         ResultReq = JSON.parse(htmlString)
         albums = ResultReq['results']['albummatches']['album']
         //console.log("Nombre de réponses " + albums.length + " sur " + ResultReq['results']['opensearch:totalResults'] + " " + (albums.length/ResultReq['results']['opensearch:totalResults'])*100) + "\%"
@@ -22,11 +22,15 @@ function getUrl(TitreMusique, ArtisteMusique){
           bonneMusique = (albums[i].name.toUpperCase() == TitreMusique.toUpperCase() && albums[i].artist.toUpperCase() == ArtisteMusique.toUpperCase());
           //console.log("i: " + i + ", chanson: " + albums[i].name + ", artiste: " + albums[i].artist)
           if (bonneMusique){
-            Url = albums[i].url
+            UrlMusique = albums[i].url
+            var indice = albums[i].image.length - 1
+            console.log("NbImage: " + indice)
+            UrlPochette = albums[i].image[indice]['#text']
           }
           i++;
         }
-        resolve(Url);
+        var Urls = [UrlMusique, UrlPochette]
+        resolve(Urls);
       })
       .catch(function (err) {
         console.log (err)
@@ -48,14 +52,16 @@ export class MusiqueInfoService {
   }
 
   async create2(infoChanson: CreateMusiqueInfo1Dto): Promise<MusiqueInfo>{
-        const Url = await getUrl(infoChanson.name, infoChanson.artiste)
-       console.log("URL: " + Url)
-        const createdMusiqueInfo = new this.musiqueInfoModel({
-          name: infoChanson.name,
-          artiste: infoChanson.artiste,
-          url: Url
-        });
-        return createdMusiqueInfo.save();
+    const Url= await getUrl(infoChanson.name, infoChanson.artiste)
+    console.log("URL1: " + Url[0])
+    console.log("URL2: " + Url[1])
+    const createdMusiqueInfo = new this.musiqueInfoModel({
+      name: infoChanson.name,
+      artiste: infoChanson.artiste,
+      urlMusique: Url[0],
+      urlPochette: Url[1]
+    });
+    return createdMusiqueInfo.save();
  }
 
   async findById(id: string): Promise<MusiqueInfo>{

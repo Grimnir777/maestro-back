@@ -3,5 +3,6 @@ import * as mongoose from 'mongoose';
 export const MusiqueInfoSchema = new mongoose.Schema({
   name: String,
   artiste: String,
-  url: String
+  urlMusique: String,
+  urlPochette: String
 });
