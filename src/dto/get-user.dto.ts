@@ -2,23 +2,20 @@ import { IsString, ArrayUnique } from 'class-validator';
 import { Document } from 'mongoose';
 import { UserType } from 'src/interfaces/user.interface';
 
-export class CreateUserDto extends Document {
+export class GetUserDto extends Document {
   @IsString()
-  readonly name: string;
+  name: string;
 
   @IsString()
-  readonly lastname: string;
-
-  @ArrayUnique()
-  @IsString()
-  readonly mail: string;
+  lastname: string;
 
   @ArrayUnique()
   @IsString()
-  readonly pseudo: string;
+  mail: string;
 
+  @ArrayUnique()
   @IsString()
-  password: string;
+  pseudo: string;
 
   @IsString()
   typeUser: UserType;

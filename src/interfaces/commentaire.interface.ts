@@ -1,7 +1,6 @@
-import { Document } from 'mongoose';
-
-export interface Commentaire extends Document {
-    readonly idUser: String;
-    readonly idPartition: String;
-    readonly text: String;
+export interface Commentaire {
+    idUser: string;
+    pseudoUser: string;
+    text: string;
+    date: Date;
 }

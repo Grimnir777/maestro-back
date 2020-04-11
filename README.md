@@ -18,7 +18,7 @@ Application communautaire de partage de tablatures et partitions.
  - Commentaire (idUser, idMusique, commentaire)
  - Partition (auteur last.fm, titre last.fm, liste d'instruments, difficulté, lien vers COS)
 
- Endpoints : create, update, delete, get
+ Endpoints : create, update, delete, gestion
 
 ### Stockage partitions
 
@@ -46,7 +46,6 @@ Pffzgjzrknh,b
 
 ```sh
 npm install
-npm install -g @nestjs/cli
 ```
 ### Build
 ```sh
@@ -57,4 +56,19 @@ Lancer la commande
 ```sh
 npm run start:dev
 ```
+
+# installation en local 
+
+- Lancer Minio en local :
+ ```sh
+docker pull minio/minio
+docker run -d -p 9000:9000 minio/minio server /data
+```
+Use default credentials : minioadmin/minioadmin
+
+- Lancer Mongo en local (dépend de l'OS utilisé)
+
+- Lancer le [front](https://github.com/Grimnir777/maestro-front) en local (npm install && ng serve)
+
+- Lancer le [back](https://github.com/Grimnir777/maestro-back) en local (npm install && npm run start:dev)
 

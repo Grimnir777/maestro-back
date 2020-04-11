@@ -24,7 +24,7 @@ export class PartitionsService {
   }
 
   async update(partition: CreatePartitionDto): Promise<Partition> {
-    const partitionToUpdate = this.findById(partition.id);
+    const partitionToUpdate = this.findById(partition._id);
     return (await partitionToUpdate).update(partition);
   }
 
