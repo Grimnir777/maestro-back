@@ -9,5 +9,8 @@ export class CreateMusiqueInfo2Dto extends Document {
   readonly artiste: string;
 
   @IsString()
-  readonly url: string; 
+  readonly urlMusique: string; 
+
+  @IsString()
+  readonly urlPochette: string; 
 }
