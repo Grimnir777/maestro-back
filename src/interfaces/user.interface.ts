@@ -6,10 +6,10 @@ export enum UserType {
 }
 
 export interface User extends Document {
-    readonly name: String;
-    readonly lastname: String;
-    readonly mail: {type: String, unique: true};
-    readonly pseudo: {type: String, unique: true};
-    readonly password: String;
+    name: String;
+    lastname: String;
+    mail: {type: String, unique: true};
+    pseudo: {type: String, unique: true};
+    password: String;
     typeUser: UserType;
 }

@@ -18,7 +18,7 @@ export class UsersController {
     @ApiBody({type: CreateUserDto})
     @ApiCreatedResponse({description: 'Return the user created'})
     @ApiBadRequestResponse({description: 'Impossible to create the user'})
-    postUser(@Body() user: CreateUserDto): any{
+    postUser(@Body() user: CreateUserDto): Promise<any>{
       return this.userService.create(user);
     }
 
