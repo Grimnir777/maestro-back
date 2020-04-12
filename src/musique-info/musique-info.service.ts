@@ -14,7 +14,6 @@ function getUrl(TitreMusique, ArtisteMusique){
   return new Promise((resolve, reject) => {
     rp("http://ws.audioscrobbler.com/2.0/?method=" + METHOD + "&limit=" + LIMIT + "&album=" + (TitreMusique) + "&api_key=" + API_KEY + "&format=" + FORMAT)
       .then(function (htmlString) {
-        UrlMusique = "Pas d'url trouvée"
         ResultReq = JSON.parse(htmlString)
         albums = ResultReq['results']['albummatches']['album']
         //console.log("Nombre de réponses " + albums.length + " sur " + ResultReq['results']['opensearch:totalResults'] + " " + (albums.length/ResultReq['results']['opensearch:totalResults'])*100) + "\%"
@@ -24,7 +23,7 @@ function getUrl(TitreMusique, ArtisteMusique){
           if (bonneMusique){
             UrlMusique = albums[i].url
             var indice = albums[i].image.length - 1
-            console.log("NbImage: " + indice)
+            //console.log("NbImage: " + indice)
             UrlPochette = albums[i].image[indice]['#text']
           }
           i++;
@@ -53,16 +52,24 @@ export class MusiqueInfoService {
 
   async create2(infoChanson: CreateMusiqueInfo1Dto): Promise<MusiqueInfo>{
     const Url= await getUrl(infoChanson.name, infoChanson.artiste)
-    console.log("URL1: " + Url[0])
-    console.log("URL2: " + Url[1])
+    //console.log("URL1: " + Url[0])
+    //console.log("URL2: " + Url[1])
     const createdMusiqueInfo = new this.musiqueInfoModel({
-      name: infoChanson.name,
-      artiste: infoChanson.artiste,
+      name: infoChanson.name.toUpperCase(),
+      artiste: infoChanson.artiste.toUpperCase(),
       urlMusique: Url[0],
       urlPochette: Url[1]
     });
     return createdMusiqueInfo.save();
  }
+
+ async findByMusique(musique: string): Promise<MusiqueInfo[]>{
+  return this.musiqueInfoModel.find({name: musique.toUpperCase()});
+  }
+
+  async findByArtiste(artiste: string): Promise<MusiqueInfo[]>{
+    return this.musiqueInfoModel.find({artiste: artiste.toUpperCase()});
+  }
 
   async findById(id: string): Promise<MusiqueInfo>{
     return this.musiqueInfoModel.findById(id);
