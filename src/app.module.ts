@@ -20,7 +20,7 @@ import configuration from './config/configuration';
     TicketModule,
     PartitionModule,
     AuthModule,
-    PartitionFileModule
+    PartitionFileModule,
     MusiqueInfoModule,
     PartitionFileModule,
     ConfigModule.forRoot({
