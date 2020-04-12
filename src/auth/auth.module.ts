@@ -8,6 +8,7 @@ import { DatabaseModule } from 'src/database/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   controllers: [
@@ -17,9 +18,12 @@ import { AuthController } from './auth.controller';
     UserModule,
     PassportModule.register({defaultStrategy: 'jwt'}),
     DatabaseModule,
-    JwtModule.register({
-      secret: process.env.jwtSecret,
-      signOptions: { expiresIn: '2 days' },
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('jwtSecret'),
+        signOptions: { expiresIn: '2 days' }
+      }),
+      inject: [ConfigService],
     })
   ],
   providers: [

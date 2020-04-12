@@ -33,8 +33,8 @@ export class UsersService {
     return this.userModel.findById(id);
   }
 
-  async findByPseudo(userpseudo: string): Promise<User>{
-    return this.userModel.findOne({pseudo: userpseudo});
+  async findByPseudo(pseudo: any): Promise<User>{
+    return this.userModel.findOne({pseudo});
   }
   
   async update(user: CreateUserDto): Promise<User>{

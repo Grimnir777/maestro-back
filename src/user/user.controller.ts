@@ -3,6 +3,7 @@ import { UsersService } from './user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiTags, ApiOperation, ApiBody, ApiCreatedResponse, ApiBadRequestResponse, ApiUnauthorizedResponse, ApiOkResponse, ApiParam, ApiNotFoundResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -31,7 +32,7 @@ export class UsersController {
     @ApiUnauthorizedResponse({description:'Error with your credentials, have you authenticated yourself ?'})
     putUser(@Body() user: CreateUserDto): any{
       return this.userService.update(user);
-    } 
+    }
 
     
     @UseGuards(JwtAuthGuard)
@@ -46,6 +47,7 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @UseGuards(RolesGuard)
     @Get()
     @ApiBearerAuth()
     @ApiOperation({summary: 'Get alls users'})

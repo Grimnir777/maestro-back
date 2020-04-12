@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maestro-back
+  namespace: thibaudg
+spec:
+  selector:
+    matchLabels:
+      app: maestro-back
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: maestro-back
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: maestro-back
+          image: grimnir777/maestro-back:1.0.1
+          env:
+            - name: jwtSecret
+              value: "Awesome"
+            - name: mongoUrl
+              value: "mongo-0.mongo"
+            - name: mongoPort
+              value: "27017"
+            - name: minioUrl
+              value: "minio"
+            - name: minioPort
+              value: "9000"
+            - name: minioUser
+              value: "minio"
+            - name: minioPassword
+              value: "minio123"
+          ports:
+            - name: http
+              containerPort: 3000

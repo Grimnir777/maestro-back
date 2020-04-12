@@ -6,18 +6,20 @@ import { PartitionModule } from './partition/partition.module';
 import { AuthModule } from './auth/auth.module';
 import { PartitionFileModule } from './partition-file/partition-file.module';
 import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal:true
+    }),
     DatabaseModule,
     UserModule,
     TicketModule,
     PartitionModule,
     AuthModule,
-    PartitionFileModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    })    
+    PartitionFileModule
   ],
   controllers: [],
   providers: []

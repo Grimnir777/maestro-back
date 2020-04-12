@@ -1,12 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { MinioService } from 'nestjs-minio-client';
 import { v4 as uuidv4 } from 'uuid';
-import { Readable } from 'stream';
+import { ConfigService } from '@nestjs/config';
+
+var Minio = require('minio')
+
+
 
 @Injectable()
 export class PartitionFileService {
 
   constructor(private readonly minioClient: MinioService) {}
+
+  public async checkBucket(bucketName: string) {
+    const bucket = await this.minioClient.client.bucketExists(bucketName);
+    if(!bucket) {
+      const createBucket = await this.minioClient.client.makeBucket(bucketName, 'us-east-1');
+      if(createBucket) {
+        console.log('Bucket created successfully');
+      }
+    } else {
+      console.log('Bucket already exists');
+    }
+  }
 
   async listAllBuckets() {
     return this.minioClient.client.listBuckets();
@@ -17,10 +33,10 @@ export class PartitionFileService {
       // if needed file.originalname
       const uuid = uuidv4();
       await this.minioClient.client.putObject(bucket, uuid, file.buffer);
-      const url = await this.getObjectUrl(bucket, file.fileName);
+      const url = await this.getObjectUrl(bucket, uuid);
       return {
         id: uuid,
-        url: url
+        url: url.url
       };
     } catch (error) {
       console.log(error);
@@ -29,30 +45,10 @@ export class PartitionFileService {
 
   }
 
-  async getObject(bucket: string, fileName: string){
-    const stream = new Readable();
-    var size = 0
-    this.minioClient.client.getObject(bucket, fileName, function(err, dataStream) {
-      if (err) {
-        return console.log(err)
-      }
-      dataStream.on('data', function(chunk) {
-        size += chunk.length
-        stream.push(chunk);
-      })
-      dataStream.on('end', function() {
-        console.log('End. Total size = ' + size)
-        stream.push(null);
-      })
-      dataStream.on('error', function(err) {
-        console.log(err)
-      })
-    })
-    return stream;
-  }
-
-  async getObjectUrl(bucket: string, fileName: string): Promise<string> {
-    return await this.minioClient.client.presignedUrl('GET', bucket, fileName, 24*60*60);
+  async getObjectUrl(bucket: string, fileName: string): Promise<any> {
+    // return await this.minioClient.client.presignedUrl('GET', bucket, fileName, 24*60*60);
+    const url = await this.minioClient.client.presignedGetObject(bucket, fileName, 24*60*60);
+    return {url};
   }
 
   async deleteObject(bucket: string, fileName: string) {
